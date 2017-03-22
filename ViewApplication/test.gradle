@@ -1,0 +1,54 @@
+class A {
+    A() {
+        this(1)
+        println "A1 init"
+        this.test()
+    }
+
+    A(int i) {
+        println "A2 init i:{$i}"
+    }
+
+    void test(){
+        println "test A0"
+        this.test(1)
+        test(2)
+    }
+
+    void test(int i){
+        println "test A2 i:${i}"
+    }
+}
+
+class B extends A {
+    B() {
+        super()
+        println "B1 init"
+    }
+
+    B(int i) {
+        println "B2 init i:{$i}"
+    }
+
+    void test(){
+        super.test()
+        println "test B0"
+    }
+
+    void test(int i){
+        println "test B2"
+    }
+}
+
+def b = new B();
+b.test()
+
+
+//A2 init i:{1}
+//A1 init
+//B1 init
+//test A0
+//test B2
+//test B2
+//test B0
+
