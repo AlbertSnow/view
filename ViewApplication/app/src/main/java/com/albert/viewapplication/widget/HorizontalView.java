@@ -8,30 +8,36 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Scroller;
 
 /**
  * Created by Administrator on 2017/3/22.
  */
 
 public class HorizontalView extends FrameLayout {
+    private Scroller mScroller;
+    private int mInitX;
+    private int mInitY;
+    private int mLastX;
+    private int mLastY;
 
     public HorizontalView(@NonNull Context context) {
         super(context);
-        init();
+        init(context, null);
     }
 
     public HorizontalView(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(context, attrs);
     }
 
     public HorizontalView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
+        init(context, attrs);
     }
 
-    private void init() {
-
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
+        mScroller = new Scroller(context);
     }
 
     @Override
@@ -52,7 +58,7 @@ public class HorizontalView extends FrameLayout {
 
         int childCount = getChildCount();
         int childLeft = 0;
-        for(int i = 0; i < childCount; i++) {
+        for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
             if (childView == null && childView.getVisibility() == View.GONE) {
                 continue;
@@ -62,5 +68,59 @@ public class HorizontalView extends FrameLayout {
             childView.layout(childLeft, 0, childRight, childView.getMeasuredHeight());
             childLeft = childRight;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        boolean handled = true;
+
+        int x = (int) event.getX();
+        int y = (int) event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (!mScroller.isFinished()) {
+                    mScroller.abortAnimation();
+                }
+
+                mInitX = (int) event.getX();
+                mInitY = (int) event.getY();
+                mLastX = mInitX;
+                mLastY = mInitY;
+
+                break;
+            case MotionEvent.ACTION_MOVE:
+                scrollBy(mLastX - x, 0);
+                invalidate();
+                break;
+            case MotionEvent.ACTION_UP:
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                break;
+        }
+        mLastX = x;
+        mLastY = y;
+
+        return handled;
+    }
+
+    private void smoothScrollTo() {
+
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+        if (mScroller.computeScrollOffset()) {
+            scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
+            invalidate();
+        }
+    }
+
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
     }
 }
