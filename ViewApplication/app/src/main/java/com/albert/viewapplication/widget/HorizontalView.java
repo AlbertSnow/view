@@ -5,8 +5,11 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.widget.FrameLayout;
 import android.widget.Scroller;
 
@@ -15,11 +18,19 @@ import android.widget.Scroller;
  */
 
 public class HorizontalView extends FrameLayout {
-    private Scroller mScroller;
+    private static final String TAG = "HorizontalView";
     private int mInitX;
     private int mInitY;
+
     private int mLastX;
     private int mLastY;
+
+    private Scroller mScroller;
+    private VelocityTracker mVelocityTracer;
+    private int MIN_FLING_VELOCITY;
+    private int mCurrentIndex;
+    private int mLastIndex;
+
 
     public HorizontalView(@NonNull Context context) {
         super(context);
@@ -38,6 +49,7 @@ public class HorizontalView extends FrameLayout {
 
     private void init(@NonNull Context context, @Nullable AttributeSet attrs) {
         mScroller = new Scroller(context);
+        MIN_FLING_VELOCITY = ViewConfiguration.get(getContext()).getScaledMaximumFlingVelocity();
     }
 
     @Override
@@ -82,21 +94,39 @@ public class HorizontalView extends FrameLayout {
                 if (!mScroller.isFinished()) {
                     mScroller.abortAnimation();
                 }
+                if (mVelocityTracer == null) {
+                    mVelocityTracer = VelocityTracker.obtain();
+                } else {
+                    mVelocityTracer.clear();
+                }
 
                 mInitX = (int) event.getX();
                 mInitY = (int) event.getY();
                 mLastX = mInitX;
                 mLastY = mInitY;
-
+                mVelocityTracer.addMovement(event);
                 break;
+
             case MotionEvent.ACTION_MOVE:
                 scrollBy(mLastX - x, 0);
                 invalidate();
+                mVelocityTracer.addMovement(event);
                 break;
+
             case MotionEvent.ACTION_UP:
+                mVelocityTracer.computeCurrentVelocity(1000);
+                float xVelocity = mVelocityTracer.getXVelocity();
+
+                computeSelectChildIndex(xVelocity);
+                scrollToChildIndex();
+
+                mVelocityTracer.clear();
                 break;
+
             case MotionEvent.ACTION_CANCEL:
+                mVelocityTracer.clear();
                 break;
+
         }
         mLastX = x;
         mLastY = y;
@@ -104,7 +134,38 @@ public class HorizontalView extends FrameLayout {
         return handled;
     }
 
-    private void smoothScrollTo() {
+    private void scrollToChildIndex() {
+
+    }
+
+    private void computeSelectChildIndex(float xVelocity) {
+        Log.d(TAG, "xVelocity: " + xVelocity);
+
+        mLastIndex = mCurrentIndex;
+        int deltaX = mLastX - mInitX;
+
+        int childWidth = getMeasuredWidth();
+
+        //the absolute value of
+        float absIndexXPercent = Math.abs(deltaX * 1.0f % childWidth) / childWidth;
+
+        if (Math.abs(xVelocity) > MIN_FLING_VELOCITY) { // It's trigger fling operate
+            mCurrentIndex += xVelocity > 0 ? 1 : -1;
+        } else {
+            if (deltaX > 0) {
+                mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
+            } else {
+                mCurrentIndex -= absIndexXPercent > 0.5 ? 1 : 0;
+            }
+        }
+        mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex : 0;
+
+        int leftOffset = (int) ((1 - absIndexXPercent) * getMeasuredWidth() + 0.5);
+        smoothScrollTo(mCurrentIndex > mLastIndex ? -leftOffset : leftOffset, 0);
+    }
+
+    private void smoothScrollTo(int deltaX, int deltaY) {
+        mScroller.startScroll(0, 0, mLastX + deltaX, deltaY);
 
     }
 
@@ -121,6 +182,6 @@ public class HorizontalView extends FrameLayout {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-
     }
+
 }
