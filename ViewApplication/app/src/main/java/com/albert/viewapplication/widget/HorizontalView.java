@@ -14,9 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 /**
- * Created by Administrator on 2017/3/22.
+ * This custom view is implement Scroll and Fling operate.
+ * Created by AlbertSnow on 2017/3/22.
  */
-
 public class HorizontalView extends FrameLayout {
     private static final String TAG = "HorizontalView";
     private int mInitX;
@@ -72,7 +72,7 @@ public class HorizontalView extends FrameLayout {
         int childLeft = 0;
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            if (childView == null && childView.getVisibility() == View.GONE) {
+            if (childView == null || childView.getVisibility() == View.GONE) {
                 continue;
             }
 
@@ -131,7 +131,7 @@ public class HorizontalView extends FrameLayout {
         mLastX = x;
         mLastY = y;
 
-        return handled;
+        return true;
     }
 
     private void scrollToChildIndex() {
@@ -153,20 +153,25 @@ public class HorizontalView extends FrameLayout {
             mCurrentIndex += xVelocity > 0 ? 1 : -1;
         } else {
             if (deltaX > 0) {
-                mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
-            } else {
                 mCurrentIndex -= absIndexXPercent > 0.5 ? 1 : 0;
+            } else {
+                mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
             }
         }
         mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex : 0;
 
-        int leftOffset = (int) ((1 - absIndexXPercent) * getMeasuredWidth() + 0.5);
-        smoothScrollTo(mCurrentIndex > mLastIndex ? -leftOffset : leftOffset, 0);
+        int absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
+        if (absIndexXPercent > 0.5) {
+            absLeftOffset = childWidth - absLeftOffset;
+        }
+
+
+        smoothScrollBy(mCurrentIndex > mLastIndex ? absLeftOffset : -absLeftOffset, 0);
     }
 
-    private void smoothScrollTo(int deltaX, int deltaY) {
-        mScroller.startScroll(0, 0, mLastX + deltaX, deltaY);
-
+    private void smoothScrollBy(int deltaX, int deltaY) {
+        mScroller.startScroll(getScrollX(), 0, deltaX, deltaY);
+        invalidate();
     }
 
     @Override
@@ -174,7 +179,7 @@ public class HorizontalView extends FrameLayout {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
             scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
-            invalidate();
+            postInvalidate();
         }
     }
 
