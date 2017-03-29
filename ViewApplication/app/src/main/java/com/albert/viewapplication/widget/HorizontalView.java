@@ -148,25 +148,45 @@ public class HorizontalView extends FrameLayout {
 
         //the absolute value of
         float absIndexXPercent = Math.abs(deltaX * 1.0f % childWidth) / childWidth;
+        int absLeftOffset;
 
-        if (Math.abs(xVelocity) > MIN_FLING_VELOCITY) { // It's trigger fling operate
-            mCurrentIndex += xVelocity > 0 ? 1 : -1;
+        if (Math.abs(xVelocity) > 50) { // It's trigger fling operate
+            mCurrentIndex += xVelocity > 0 ? -1 : 1;
+            absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
+            if (mCurrentIndex < 0 || getScrollX() < 0) {
+                //index out of rang but velocity make reverse accelerate
+            } else {
+                absLeftOffset = childWidth - absLeftOffset;
+            }
         } else {
             if (deltaX > 0) {
                 mCurrentIndex -= absIndexXPercent > 0.5 ? 1 : 0;
             } else {
                 mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
             }
+            absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
+
+            if (mCurrentIndex < 0) {
+
+            } else {
+                if (absIndexXPercent > 0.5) {
+                    absLeftOffset = childWidth - absLeftOffset;
+                }
+            }
+
+        }
+
+        int scrollDeltaX = 0;
+
+        if (mCurrentIndex < 0) {
+            scrollDeltaX = absLeftOffset;
+        } else {
+            scrollDeltaX = mCurrentIndex > mLastIndex ? absLeftOffset : -absLeftOffset;
         }
         mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex : 0;
 
-        int absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
-        if (absIndexXPercent > 0.5) {
-            absLeftOffset = childWidth - absLeftOffset;
-        }
 
-
-        smoothScrollBy(mCurrentIndex > mLastIndex ? absLeftOffset : -absLeftOffset, 0);
+        smoothScrollBy(scrollDeltaX, 0);
     }
 
     private void smoothScrollBy(int deltaX, int deltaY) {
