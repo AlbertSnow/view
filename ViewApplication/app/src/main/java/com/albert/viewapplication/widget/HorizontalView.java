@@ -143,6 +143,7 @@ public class HorizontalView extends FrameLayout {
 
         mLastIndex = mCurrentIndex;
         int deltaX = mLastX - mInitX;
+        int indexOffset = 0;
 
         int childWidth = getMeasuredWidth();
 
@@ -150,23 +151,28 @@ public class HorizontalView extends FrameLayout {
         float absIndexXPercent = Math.abs(deltaX * 1.0f % childWidth) / childWidth;
 
         if (Math.abs(xVelocity) > MIN_FLING_VELOCITY) { // It's trigger fling operate
-            mCurrentIndex += xVelocity > 0 ? 1 : -1;
+            indexOffset += xVelocity > 0 ? 1 : -1;
         } else {
-            if (deltaX > 0) {
-                mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
+            if (deltaX > 0) {// slide right
+                indexOffset -= absIndexXPercent > 0.5 ? 1 : 0;
             } else {
-                mCurrentIndex -= absIndexXPercent > 0.5 ? 1 : 0;
+                indexOffset += absIndexXPercent > 0.5 ? 1 : 0;
             }
         }
-        mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex : 0;
 
-        int leftOffset = (int) ((1 - absIndexXPercent) * getMeasuredWidth() + 0.5);
-        smoothScrollTo(mCurrentIndex > mLastIndex ? -leftOffset : leftOffset, 0);
+//        getScrollX() / childWidth
+        indexOffset = indexOffset > 0 ? indexOffset : 0;
+
+//        mCurrentIndex =
+
+        int indexChildOffset = mCurrentIndex * childWidth;
+        int leftOffset = indexChildOffset - Math.abs(getScrollX());
+        smoothScrollTo(mCurrentIndex > mLastIndex ? leftOffset : -leftOffset, 0);
     }
 
     private void smoothScrollTo(int deltaX, int deltaY) {
-        mScroller.startScroll(0, 0, mLastX + deltaX, deltaY);
-
+        mScroller.startScroll(getScrollX(), 0, deltaX, deltaY);
+        postInvalidate();
     }
 
     @Override

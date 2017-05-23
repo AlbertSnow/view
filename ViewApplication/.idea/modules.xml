@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ViewApplication.iml" filepath="$PROJECT_DIR$/ViewApplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/accessiblityapplication/accessiblityapplication.iml" filepath="$PROJECT_DIR$/accessiblityapplication/accessiblityapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/constraintapp/constraintapp.iml" filepath="$PROJECT_DIR$/constraintapp/constraintapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/windowapplication/windowapplication.iml" filepath="$PROJECT_DIR$/windowapplication/windowapplication.iml" />
     </modules>
   </component>
 </project>

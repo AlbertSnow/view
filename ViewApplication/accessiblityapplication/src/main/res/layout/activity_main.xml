@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:id="@+id/root_view"
+    android:layout_height="match_parent"
+    tools:context="com.albert.accessiblityapplication.MainActivity">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Hello World!" app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent" app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/cmd_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Command"
+        app:layout_constraintRight_toLeftOf="@+id/inner_server_cmd_btn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="107dp" />
+
+    <Button
+        android:id="@+id/inner_server_cmd_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="InnerServer"
+        app:layout_constraintRight_toLeftOf="@+id/out_server_btn"
+        app:layout_constraintLeft_toRightOf="@+id/cmd_btn"
+        app:layout_constraintBaseline_toBaselineOf="@+id/cmd_btn" />
+
+    <Button
+        android:id="@+id/out_server_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OutServer"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/inner_server_cmd_btn"
+        app:layout_constraintBaseline_toBaselineOf="@+id/inner_server_cmd_btn" />
+
+</android.support.constraint.ConstraintLayout>
