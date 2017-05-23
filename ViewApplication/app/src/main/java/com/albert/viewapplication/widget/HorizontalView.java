@@ -14,9 +14,9 @@ import android.widget.FrameLayout;
 import android.widget.Scroller;
 
 /**
- * Created by Administrator on 2017/3/22.
+ * This custom view is implement Scroll and Fling operate.
+ * Created by AlbertSnow on 2017/3/22.
  */
-
 public class HorizontalView extends FrameLayout {
     private static final String TAG = "HorizontalView";
     private int mInitX;
@@ -72,7 +72,7 @@ public class HorizontalView extends FrameLayout {
         int childLeft = 0;
         for (int i = 0; i < childCount; i++) {
             View childView = getChildAt(i);
-            if (childView == null && childView.getVisibility() == View.GONE) {
+            if (childView == null || childView.getVisibility() == View.GONE) {
                 continue;
             }
 
@@ -131,7 +131,7 @@ public class HorizontalView extends FrameLayout {
         mLastX = x;
         mLastY = y;
 
-        return handled;
+        return true;
     }
 
     private void scrollToChildIndex() {
@@ -143,36 +143,55 @@ public class HorizontalView extends FrameLayout {
 
         mLastIndex = mCurrentIndex;
         int deltaX = mLastX - mInitX;
-        int indexOffset = 0;
 
         int childWidth = getMeasuredWidth();
 
         //the absolute value of
         float absIndexXPercent = Math.abs(deltaX * 1.0f % childWidth) / childWidth;
+        int absLeftOffset;
 
-        if (Math.abs(xVelocity) > MIN_FLING_VELOCITY) { // It's trigger fling operate
-            indexOffset += xVelocity > 0 ? 1 : -1;
-        } else {
-            if (deltaX > 0) {// slide right
-                indexOffset -= absIndexXPercent > 0.5 ? 1 : 0;
+        if (Math.abs(xVelocity) > 50) { // It's trigger fling operate
+            mCurrentIndex += xVelocity > 0 ? -1 : 1;
+            absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
+            if (mCurrentIndex < 0 || getScrollX() < 0) {
+                //index out of rang but velocity make reverse accelerate
             } else {
-                indexOffset += absIndexXPercent > 0.5 ? 1 : 0;
+                absLeftOffset = childWidth - absLeftOffset;
             }
+        } else {
+            if (deltaX > 0) {
+                mCurrentIndex -= absIndexXPercent > 0.5 ? 1 : 0;
+            } else {
+                mCurrentIndex += absIndexXPercent > 0.5 ? 1 : 0;
+            }
+            absLeftOffset = (int) (Math.abs(deltaX * 1.0f % childWidth));
+
+            if (mCurrentIndex < 0) {
+
+            } else {
+                if (absIndexXPercent > 0.5) {
+                    absLeftOffset = childWidth - absLeftOffset;
+                }
+            }
+
         }
 
-//        getScrollX() / childWidth
-        indexOffset = indexOffset > 0 ? indexOffset : 0;
+        int scrollDeltaX = 0;
 
-//        mCurrentIndex =
+        if (mCurrentIndex < 0) {
+            scrollDeltaX = absLeftOffset;
+        } else {
+            scrollDeltaX = mCurrentIndex > mLastIndex ? absLeftOffset : -absLeftOffset;
+        }
+        mCurrentIndex = mCurrentIndex > 0 ? mCurrentIndex : 0;
 
-        int indexChildOffset = mCurrentIndex * childWidth;
-        int leftOffset = indexChildOffset - Math.abs(getScrollX());
-        smoothScrollTo(mCurrentIndex > mLastIndex ? leftOffset : -leftOffset, 0);
+
+        smoothScrollBy(scrollDeltaX, 0);
     }
 
-    private void smoothScrollTo(int deltaX, int deltaY) {
+    private void smoothScrollBy(int deltaX, int deltaY) {
         mScroller.startScroll(getScrollX(), 0, deltaX, deltaY);
-        postInvalidate();
+        invalidate();
     }
 
     @Override
@@ -180,7 +199,7 @@ public class HorizontalView extends FrameLayout {
         super.computeScroll();
         if (mScroller.computeScrollOffset()) {
             scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
-            invalidate();
+            postInvalidate();
         }
     }
 
