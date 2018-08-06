@@ -1,4 +1,4 @@
-package com.albert.viewapplication.widget;
+package com.albert.viewapplication.horizontal;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;

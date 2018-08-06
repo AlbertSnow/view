@@ -1,7 +1,12 @@
 package com.albert.viewapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+
+import com.albert.viewapplication.drawmodel.HardWareDrawlActivity;
+import com.albert.viewapplication.drawmodel.SoftWareDrawlActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -11,8 +16,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onClickHardware(View view) {
+        startActivity(new Intent(this, HardWareDrawlActivity.class));
     }
+
+    public void onClickSoftware(View view) {
+        startActivity(new Intent(this, SoftWareDrawlActivity.class));
+    }
+
 }
