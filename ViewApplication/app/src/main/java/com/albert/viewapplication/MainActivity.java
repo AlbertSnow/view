@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.albert.viewapplication.drawmodel.HardWareDrawlActivity;
 import com.albert.viewapplication.drawmodel.SoftWareDrawlActivity;
+import com.albert.viewapplication.intercept.TestInterceptActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClickSoftware(View view) {
         startActivity(new Intent(this, SoftWareDrawlActivity.class));
+    }
+
+    public void onClickIntercept(View view) {
+        startActivity(new Intent(this, TestInterceptActivity.class));
     }
 
 }

@@ -13,7 +13,6 @@
         >
 
         <Button
-            android:id="@+id/main_hardware_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="HardWareDrawModel"
@@ -21,11 +20,18 @@
             android:textAllCaps="false"
             />
         <Button
-            android:id="@+id/main_software_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SoftWareDrawModel"
             android:onClick="onClickSoftware"
+            android:textAllCaps="false"
+            />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TestIntercept"
+            android:onClick="onClickIntercept"
             android:textAllCaps="false"
             />
 

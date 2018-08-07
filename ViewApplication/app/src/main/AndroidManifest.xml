@@ -21,6 +21,7 @@
         <activity android:name=".drawmodel.SoftWareDrawlActivity"
             android:hardwareAccelerated="false"
             />
+        <activity android:name=".intercept.TestInterceptActivity" />
     </application>
 
 </manifest>
