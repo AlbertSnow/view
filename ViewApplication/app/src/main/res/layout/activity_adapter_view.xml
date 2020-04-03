@@ -6,7 +6,7 @@
     tools:context="com.albert.viewapplication.MainActivity">
 
     <!--源语言发音-->
-    <com.sogou.baseui.widgets.SelfAdaptionViewGroup
+    <com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup
         android:id="@+id/sv_source_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -90,6 +90,6 @@
             android:tag="right" />
 
 
-    </com.sogou.baseui.widgets.SelfAdaptionViewGroup>
+    </com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup>
 
 </RelativeLayout>
