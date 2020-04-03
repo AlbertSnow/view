@@ -1,1 +1,2 @@
-include ':app', ':windowapplication', ':constraintapp', ':accessiblityapplication'
+include ':app'
+//, ':windowapplication', ':constraintapp', ':accessiblityapplication'

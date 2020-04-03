@@ -1,12 +1,14 @@
 package com.albert.viewapplication.intercept;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class CustomButton extends android.support.v7.widget.AppCompatButton{
+public class CustomButton extends AppCompatButton {
 
     public CustomButton(Context context) {
         super(context);

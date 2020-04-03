@@ -1,12 +1,14 @@
 package com.albert.viewapplication.intercept;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.LinearLayoutCompat;
+
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class CustomLinearLayout extends android.support.v7.widget.LinearLayoutCompat{
+public class CustomLinearLayout extends LinearLayoutCompat {
 
     private int timeCount;
 
