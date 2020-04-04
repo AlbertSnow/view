@@ -1,35 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context="com.albert.viewapplication.MainActivity">
 
     <!--源语言发音-->
+<!--    <com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:tag="1"-->
+<!--        android:paddingBottom="5dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"-->
+<!--                />-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginLeft="25dp"-->
+<!--            android:src="@drawable/text_collection_ic_uncollect"-->
+<!--            android:tag="right" />-->
+
+
+<!--    </com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup>-->
+<!--    <com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:tag="2"-->
+<!--        android:paddingBottom="5dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"-->
+<!--                />-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[dlfajsdlfjlwjfljsdlsjdlfjas]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginLeft="25dp"-->
+<!--            android:src="@drawable/text_collection_ic_uncollect"-->
+<!--            android:tag="right" />-->
+
+
+<!--    </com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup>-->
     <com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup
-        android:id="@+id/sv_source_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
+        android:tag="3"
         android:paddingBottom="5dp">
 
         <LinearLayout
-            android:id="@+id/ll_source_voice1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/hl_source_voice1"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/audio_icon_repeat_unnormal"
                 />
 
             <ImageView
-                android:id="@+id/hl_source_voice1_repeat"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="17dp"
@@ -37,18 +191,16 @@
                 android:src="@drawable/audio_icon_repeat_unnormal"  />
 
             <TextView
-                android:id="@+id/tv_source_text1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginRight="25dp"
                 android:textColor="#999999"
                 android:textSize="15dp"
-                tools:text = "[ai]" />
+                android:text = "[ai]" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_source_voice2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -68,20 +220,20 @@
                 android:layout_marginRight="25dp"
                 android:textColor="#999999"
                 android:textSize="15dp"
-                tools:text = "[ai]" />
+                android:text = "[ai]" />
 
             <TextView
-                android:id="@+id/tv_source_text2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:textColor="#999999"
                 android:textSize="15dp"
-                tools:text = "[ai]" />
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:text = "[aiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiaiai]" />
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/text_collection"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginTop="15dp"
@@ -92,4 +244,84 @@
 
     </com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup>
 
-</RelativeLayout>
+<!--    <com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="20dp"-->
+<!--        android:layout_marginRight="20dp"-->
+<!--        android:tag="4"-->
+<!--        android:paddingBottom="5dp">-->
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"-->
+<!--                />-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:visibility="gone"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:orientation="horizontal">-->
+
+<!--            <ImageView-->
+<!--                android:layout_width="20dp"-->
+<!--                android:layout_height="20dp"-->
+<!--                android:layout_marginLeft="17dp"-->
+<!--                android:layout_marginRight="17dp"-->
+<!--                android:src="@drawable/audio_icon_repeat_unnormal"  />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="25dp"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:textColor="#999999"-->
+<!--                android:textSize="15dp"-->
+<!--                android:text = "[ai]" />-->
+<!--        </LinearLayout>-->
+
+<!--        <ImageView-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginLeft="25dp"-->
+<!--            android:src="@drawable/text_collection_ic_uncollect"-->
+<!--            android:tag="right" />-->
+
+
+<!--    </com.albert.viewapplication.custom.widget.SelfAdaptionViewGroup>-->
+
+</LinearLayout>

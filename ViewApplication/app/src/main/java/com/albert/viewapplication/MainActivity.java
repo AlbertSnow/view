@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.albert.viewapplication.custom.AdapterWidthActivity;
 import com.albert.viewapplication.drawmodel.HardWareDrawlActivity;
 import com.albert.viewapplication.drawmodel.SoftWareDrawlActivity;
 import com.albert.viewapplication.intercept.TestInterceptActivity;
@@ -29,4 +30,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, TestInterceptActivity.class));
     }
 
+    public void onClickAdapterView(View view) {
+        startActivity(new Intent(this, AdapterWidthActivity.class));
+    }
 }

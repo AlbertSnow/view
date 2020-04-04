@@ -2,6 +2,7 @@ package com.albert.viewapplication.custom.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -36,6 +37,10 @@ public class SelfAdaptionViewGroup extends ViewGroup {
 
     public void setNeedAnotherLine(boolean needAnotherLine) {
         this.needAnotherLine = needAnotherLine;
+    }
+
+    private void log(String msg) {
+        Log.i("CustomView", msg);
     }
 
     @Override
@@ -81,34 +86,43 @@ public class SelfAdaptionViewGroup extends ViewGroup {
                     residueWidth = groupWidth;
                     totalHeight += maxHeight;
                     maxHeight = childHeight + childParams.topMargin + childParams.bottomMargin;
-
-                    if (i == size - 1) {
-                        totalHeight += maxHeight;
-                    }
-
-                } else if (tag.equals(TAG_ATTACH_RIGHT)) {
-                    residueWidth = groupWidth;
-                    totalHeight += maxHeight;
-                    maxHeight = childHeight + childParams.topMargin + childParams.bottomMargin;
-
-                    if (line > 1 || needAnotherLine) {
-                        totalHeight += maxHeight;
-                    }
                 } else {
                     residueWidth -= childWidth;
                     maxHeight = Math.max(maxHeight, childHeight + childParams.topMargin + childParams.bottomMargin);
-                    if (i == size - 1) {
-                        totalHeight += maxHeight;
-                    }
-                }
-
-            } else {
-                if (i == size - 1) {
-                    totalHeight += maxHeight;
                 }
             }
+
+            if (i == size - 1) {
+                totalHeight += maxHeight;
+            }
+
         }
         setMeasuredDimension(groupWidth, totalHeight);
+    }
+
+    private void dumpMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int measureWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int measureHeight = MeasureSpec.getSize(heightMeasureSpec);
+        measureChildren(MeasureSpec.makeMeasureSpec(measureWidth, MeasureSpec.UNSPECIFIED),
+                        MeasureSpec.makeMeasureSpec(measureHeight, MeasureSpec.UNSPECIFIED));
+
+        String tag = getTag() == null ? "": (String) getTag();
+        log("tag: " + tag + "group width： " + measureWidth);
+        log("tag: " + tag + "group height： " + measureHeight);
+
+
+        for (int i = 0; i<getChildCount(); i++) {
+            View childView = getChildAt(i);
+
+            if (childView == null || childView.getVisibility() != VISIBLE) {
+                log("child is null or INvisible, index: " + i);
+                continue;
+            }
+
+            log("index: " + i + "group width： " + childView.getMeasuredWidth());
+            log("index: " + i + "group height： " + childView.getMeasuredHeight());
+        }
+
     }
 
     private String getChildTag(View child) {
@@ -127,8 +141,9 @@ public class SelfAdaptionViewGroup extends ViewGroup {
         int childMeasureWidth;
         int childMeasureHeight;
 
-        int width = getMeasuredWidth();
-        int residueWidth = width - getPaddingLeft() - getPaddingTop();
+        final int width = getMeasuredWidth();
+        final int realWidth = width - getPaddingLeft() - getPaddingRight();
+        int residueWidth = realWidth;
 
         int newTop = getPaddingTop();
         int newLeft = getPaddingLeft();
@@ -148,26 +163,36 @@ public class SelfAdaptionViewGroup extends ViewGroup {
 
             String tag = getChildTag(child);
 
-            if (residueWidth - childWidthWithMargin > 0) {
+            if (residueWidth - childWidthWithMargin >= 0) {
                 //有剩余空间，直接填充
                 residueWidth -= childWidthWithMargin;
                 if (tag.equals(TAG_ATTACH_RIGHT)) {
-                    if (line > 1 || needAnotherLine) {//换一行展示
-                        newLeft = getPaddingLeft();//重置
-                        newTop = maxHeight;//指向最高的
                         child.layout(width - getPaddingRight() - childParams.rightMargin - childMeasureWidth, newTop + childParams.topMargin,
                                 width - getPaddingRight() - childParams.rightMargin,
                                 newTop + childParams.topMargin + childMeasureHeight);
-                    } else {//一行展示
-                        child.layout(width - getPaddingRight() - childParams.rightMargin - childMeasureWidth, newTop + childParams.topMargin,
-                                width - getPaddingRight() - childParams.rightMargin,
-                                newTop + childParams.topMargin + childMeasureHeight);
-                    }
                 } else {
+
+                    int rightCoord = newLeft + childParams.leftMargin + childMeasureWidth;
+
+                    if (line > 1 && (i == count - 2)) {//换一行展示
+                        View finalView = getChildAt(count - 1);
+                        if (finalView != null && finalView.getVisibility() == View.VISIBLE) {
+                            ChildParams finalViewParams = (ChildParams) finalView.getLayoutParams();
+                            int finalViewWidthWithMargin = finalView.getMeasuredWidth() +
+                                    finalViewParams.rightMargin + finalViewParams.leftMargin;
+
+                            if (rightCoord + childParams.rightMargin + finalViewWidthWithMargin > realWidth ) {
+                                rightCoord = realWidth - finalViewWidthWithMargin;
+                            }
+
+                        }
+                    }
+
+
                     child.layout(newLeft + childParams.leftMargin, newTop + childParams.topMargin,
-                            newLeft + childParams.leftMargin + childMeasureWidth,
+                            rightCoord,
                             newTop + childParams.topMargin + childMeasureHeight);
-                    newLeft = child.getRight() + childParams.rightMargin;
+                    newLeft = child.getRight() + childParams.rightMargin ;
                     maxHeight = Math.max(maxHeight, child.getBottom() + childParams.bottomMargin);
                 }
 
@@ -180,11 +205,29 @@ public class SelfAdaptionViewGroup extends ViewGroup {
                     child.layout(width - getPaddingRight() - childParams.rightMargin - childMeasureWidth, newTop + childParams.topMargin,
                             width - getPaddingRight() - childParams.rightMargin,
                             newTop + childParams.topMargin + childMeasureHeight);
-                } else {
+                    } else {
                     residueWidth = width - getPaddingLeft() - getPaddingTop();//重置
-                    residueWidth -= childWidthWithMargin;//减去当前高度
+
+                    int rightCoord = newLeft + childParams.leftMargin + childMeasureWidth;
+                    if (line > 1 && (i == count - 2)) {//换一行展示
+                        View finalView = getChildAt(count - 1);
+                        if (finalView != null && finalView.getVisibility() == View.VISIBLE) {
+                            ChildParams finalViewParams = (ChildParams) finalView.getLayoutParams();
+                            int finalViewWidthWithMargin = finalView.getMeasuredWidth() +
+                                    finalViewParams.rightMargin + finalViewParams.leftMargin;
+
+                            if (rightCoord + childParams.rightMargin + finalViewWidthWithMargin > realWidth ) {
+                                rightCoord = realWidth - finalViewWidthWithMargin;
+                            }
+
+                        }
+                        residueWidth -= (rightCoord + childParams.rightMargin);
+                    } else {
+                        residueWidth -= childWidthWithMargin;//减去当前高度
+                    }
+
                     child.layout(newLeft + childParams.leftMargin, newTop + childParams.topMargin,
-                            newLeft + childParams.leftMargin + childMeasureWidth,
+                            rightCoord,
                             newTop + childParams.topMargin + childMeasureHeight);
                     newLeft = child.getRight() + childParams.rightMargin;
                     maxHeight = Math.max(maxHeight, child.getBottom() + childParams.bottomMargin);
