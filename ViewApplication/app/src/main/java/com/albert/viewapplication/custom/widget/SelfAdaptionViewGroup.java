@@ -51,7 +51,8 @@ public class SelfAdaptionViewGroup extends ViewGroup {
             return;
         }
 
-        int groupWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int groupWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int realGroupWidth = groupWidth - getPaddingLeft() + getPaddingRight();
         int residueWidth = groupWidth - getPaddingLeft() + getPaddingRight();
 
         int maxHeight = 0;
@@ -73,21 +74,36 @@ public class SelfAdaptionViewGroup extends ViewGroup {
 
                 ChildParams childParams = (ChildParams) child.getLayoutParams();
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
-                int childWidth = child.getMeasuredWidth();
+                int childWidthWithMargin = child.getMeasuredWidth();
                 int childHeight = child.getMeasuredHeight();
-                childWidth += childParams.leftMargin + childParams.rightMargin;
-                boolean isResidueWidth = residueWidth - childWidth > 0;
+                childWidthWithMargin += childParams.leftMargin + childParams.rightMargin;
+                boolean isResidueWidth = residueWidth - childWidthWithMargin > 0;
 
 
                 if (!isResidueWidth) {
 
                     line++;
 
+                    if (i == size - 2) {//倒数第二张空间不足
+                        View finalView = getChildAt(size - 1);
+                        if (finalView != null && finalView.getVisibility() == View.VISIBLE) {
+                            ChildParams finalViewParams = (ChildParams) finalView.getLayoutParams();
+                            int finalViewWidthWithMargin = finalView.getMeasuredWidth() +
+                                    finalViewParams.rightMargin + finalViewParams.leftMargin;
+                            if (childWidthWithMargin + finalViewWidthWithMargin > groupWidth) {
+                                int limitChildWidth = realGroupWidth - finalViewWidthWithMargin;
+                                int limitWidthMeasure = MeasureSpec.makeMeasureSpec(
+                                        limitChildWidth, MeasureSpec.EXACTLY);
+                                child.measure(limitWidthMeasure, heightMeasureSpec);
+                            }
+                        }
+                    }
+
                     residueWidth = groupWidth;
                     totalHeight += maxHeight;
                     maxHeight = childHeight + childParams.topMargin + childParams.bottomMargin;
                 } else {
-                    residueWidth -= childWidth;
+                    residueWidth -= childWidthWithMargin;
                     maxHeight = Math.max(maxHeight, childHeight + childParams.topMargin + childParams.bottomMargin);
                 }
             }
@@ -207,24 +223,9 @@ public class SelfAdaptionViewGroup extends ViewGroup {
                             newTop + childParams.topMargin + childMeasureHeight);
                     } else {
                     residueWidth = width - getPaddingLeft() - getPaddingTop();//重置
+                    residueWidth -= childWidthWithMargin;//减去当前高度
 
                     int rightCoord = newLeft + childParams.leftMargin + childMeasureWidth;
-                    if (line > 1 && (i == count - 2)) {//换一行展示
-                        View finalView = getChildAt(count - 1);
-                        if (finalView != null && finalView.getVisibility() == View.VISIBLE) {
-                            ChildParams finalViewParams = (ChildParams) finalView.getLayoutParams();
-                            int finalViewWidthWithMargin = finalView.getMeasuredWidth() +
-                                    finalViewParams.rightMargin + finalViewParams.leftMargin;
-
-                            if (rightCoord + childParams.rightMargin + finalViewWidthWithMargin > realWidth ) {
-                                rightCoord = realWidth - finalViewWidthWithMargin;
-                            }
-
-                        }
-                        residueWidth -= (rightCoord + childParams.rightMargin);
-                    } else {
-                        residueWidth -= childWidthWithMargin;//减去当前高度
-                    }
 
                     child.layout(newLeft + childParams.leftMargin, newTop + childParams.topMargin,
                             rightCoord,
